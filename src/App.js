@@ -17,7 +17,7 @@ class App extends Component {
 
       if (isNaN(timestamp)===false)
       {
-          this.setState({deadline: this.state.newDeadline});
+          this.setState({deadline:new Date(this.state.newDeadline).toDateString()});
 
       }
       else{
