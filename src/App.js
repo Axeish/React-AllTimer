@@ -6,21 +6,43 @@ class App extends Component {
     super(props);
     this.state={
       deadline: 'December 25,2017',
-        newDeadline: ''
+        newDeadline: '',
+        texting:20
 
     }
   }
 
   changeDeadLine(){
-    this.setState({deadline: this.state.newDeadline});
+    let timestamp = Date.parse(this.state.newDeadline)
+
+      if (isNaN(timestamp)===false)
+      {
+          this.setState({deadline: this.state.newDeadline});
+
+      }
+      else{
+          let substrings = ['sec','min','hour'],
+              length = substrings.length;
+          var currentDate = new Date();
+          let numeral = parseInt(this.state.newDeadline.match(/\d+/),10);
+          while(length--) {
+              if (this.state.newDeadline.indexOf(substrings[length])!==-1) {
+                   let newdead = new Date(currentDate.getTime() + (numeral * 1000 * (Math.pow(60,length))));
+                   this.setState({deadline: newdead.toString()});
+              }
+          }
+       //   alert("Can you make sure that data is not any crap!");
+      }
+
+
 
   }
   render() {
     return (
       <div className="App">
-        <div className="App-title">COUNTDOWN CHAMP</div>
+        <div className="App-title">COUNTDOWN CHAMP </div>
           {this.state.deadline}<br/>
-        <Clock deadline = {this.state.deadline}/>
+        <Clock deadline={this.state.deadline} texting={this.state.texting}/>
         <br/>
         <input type="text" onChange={event => this.setState({newDeadline:event.target.value})}/>
         <button onClick={() => this.changeDeadLine()}>Submit</button>
