@@ -22,15 +22,35 @@ class App extends Component {
       }
       else{
           let substrings = ['sec','min','hour'],
+              re =/(\d+\D*)/g;
+          let sumall =0;
+          let timearray =  this.state.newDeadline.match(re)  ;
+          timearray.forEach(function(entry) {
+              console.log(entry);
               length = substrings.length;
-          var currentDate = new Date();
-          let numeral = parseInt(this.state.newDeadline.match(/\d+/),10);
-          while(length--) {
-              if (this.state.newDeadline.indexOf(substrings[length])!==-1) {
-                   let newdead = new Date(currentDate.getTime() + (numeral * 1000 * (Math.pow(60,length))));
-                   this.setState({deadline: newdead.toString()});
+
+              let numeral = parseInt(entry.match(/\d+/),10);
+
+              while(length--) {
+                  if (entry.indexOf(substrings[length])!==-1) {
+                       let newdead =  numeral * 1000 * (Math.pow(60,length));
+
+                       sumall+=newdead;
+
+                  }
               }
-          }
+          });
+          var currentDate = new Date();
+          let sumalldate = new Date(currentDate.getTime()+sumall);
+          this.setState({deadline: sumalldate.toString()});
+
+
+
+
+
+
+
+
        //   alert("Can you make sure that data is not any crap!");
       }
 
